@@ -37,3 +37,6 @@ The snake will intially be of size 1 cell then it will grow each time it consume
 
 ## Technologies used
 Python by C++ is made primarily with C++ and uses the windows header file <windows.h> along with <conio.h> to enable live input from the player, flush the text based UI output of the game at a live moment, use colors by ANSI codes and Beep() function under the windows header.
+
+## Analysis of data structures
+We have used vector containing pair of int as the data structure for snake. For checking the collisions, we iterate through all pairs and check if the grid x,y is responsible for collision or not. In this way our time complexity is O(n) as we check through the complete snake.
