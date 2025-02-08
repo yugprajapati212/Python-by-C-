@@ -1,5 +1,7 @@
 # Game Name
 Python by C++ is a windows-terminal based snake game.
+![T](images/logo.jpeg)
+
 ## Description
 Python by C++ is a terminal based, live and interactive snake game. Our goal was to make the project without using any external libraries and GUI, and mostly use the fundamentals of programming such as standard I/O, standard OOP concepts, etc. Note that it only runs on Windows.
 
