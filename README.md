@@ -20,18 +20,20 @@ We used the Beep function from windows header to make a beep sound whenever the 
 ### 2. Steps to install
 Open terminal and cd to directory where you want to install the game.
 Then, do
-sh
+```sh
 git clone https://github.com/yugprajapati212/Python-by-CPP
+```
 
 Now compile the cpp file:
-sh
+```sh
 g++ snake.cpp -o snakegame
+```
 
 
 The game should be installed. To run it type
-sh
+```sh
 ./snakegame
-
+```
 ## How to play Python by C++
 The snake will intially be of size 1 cell then it will grow each time it consumes a point. The more points it consumes and bigger it gets, more the score is done, and it keeps getting tougher to keep the game going. For movement of snake, usage of W, A, S, D keys is done. W for going upwards, S for downwards, A for right and D for left. The goal is to eat as many points as possible until the snake collides with obstacles or itself.
 
