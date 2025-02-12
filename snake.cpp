@@ -1,9 +1,6 @@
 #include <bits/stdc++.h>
 #include <conio.h>
 #include <windows.h>
-
-
-
 using namespace std;
 
 enum Direction { STOP = 0, LEFT, RIGHT, UP, DOWN };
@@ -23,6 +20,22 @@ void cyan() {
 void reset () {
   printf("\033[0m");
 }
+void brightBlue() {
+    printf("\033[1;94m");
+}
+void brightGreen() {
+    printf("\033[1;92m");
+}
+void darkBlue() {
+    printf("\033[0;34m");
+}
+void blink() {
+    printf("\033[5m");
+}
+
+void bold() {
+    printf("\033[1m");
+}
 void clearScreen() {
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         COORD cursorPosition = {0, 0};
@@ -30,13 +43,16 @@ void clearScreen() {
     }
 
 void printGameOver() {
-    red();
+    red();blink();
     cout << "  * * *     *     *     *   * * *      * * *  *   *  * * *   * * * " << endl;
+    yellow();blink();
     cout << "  *        * *    *   *   *          *   *  *   *  *       *   *" << endl;
+    green();blink();
     cout << "  *  *  * * *   * * * *   * * *      *   *  *   *  * * *   * *" << endl;
+    cyan();blink();
     cout << "  *   *   *   *   *  *  *   *          *   *   * *   *       * *" << endl;
-    cout << "  * * *   *   *   *     *   * * *      * * *    *    * * *   *   *" << endl;
-    cout << "                                                    " << endl;
+    darkBlue();blink();
+    cout << "  * * *   *   *   *     *   * * *      * * *    *    * * *   *   *" << endl<<endl;
     reset();
 }
 class SnakeGame {
@@ -51,26 +67,34 @@ private:
     vector<pair<int, int>> obstacles; // Obstacles
 
 public:
-    SnakeGame(int w, int h, int spd) : width(w), height(h), gameOver(false), score(0), speed(spd), dir(STOP) {
-        resetGame();
-    }
+SnakeGame(int w, int h, int spd) 
+: width(w), height(h), speed(spd) {
+resetGame();
+}
 
-    void resetGame() {
-        gameOver = false;
-        score = 0;
-        dir = STOP;
-        x = width / 2;
-        y = height / 2;
-        snake.clear();
-        snake.push_back({x, y});
-        foodX = rand() % width;
-        foodY = rand() % height;
-        obstacles.clear();
-        system("cls");
-        generateObstacles();
-    }
 
-    void generateObstacles() {
+void resetGame() {
+    gameOver = false;
+    score = 0;
+    dir = RIGHT;  // Set an initial movement direction
+    x = width / 2;
+    y = height / 2;
+    
+    // Initialize snake with head + two body parts
+    snake.clear();
+    snake.push_back({x, y});     // Head
+    snake.push_back({x - 1, y}); // First body segment
+    //snake.push_back({x - 2, y}); // Second body segment
+
+    foodX = rand() % width;
+    foodY = rand() % height;
+    obstacles.clear();
+    system("cls");
+    Obstacles();
+}
+
+
+    void Obstacles() {
         // Generate random obstacles
         for (int i = 0; i < width / 5; i++) {
             int ox = rand() % width;
@@ -87,22 +111,22 @@ public:
         // Draw top border
         for (int i = 0; i < width + 2; i++){ 
         cyan();
-        cout << "#";
+        cout << "_";
         reset();
         }
         cout << endl;
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (j == 0){ cyan(); cout << "#";reset();}
+                if (j == 0){ cyan(); cout << "|";reset();}
                 if (i == y && j == x){
                     green();
-                    cout << "O"; // Snake head
+                    cout << "0"; // Snake head
                     reset();
                 }
                 else if (i == foodY && j == foodX){
                     yellow();
-                    cout << "F"; // Food
+                    cout << "*"; // Food{}
                     reset();
                 }
                 else {
@@ -120,7 +144,7 @@ public:
                     for (auto obstacle : obstacles) {
                         if (obstacle.first == j && obstacle.second == i) {
                             red();
-                            cout << "X"; // Obstacle
+                            cout<<"X";
                             reset();
                             isObstacle = true;
                             break;
@@ -130,7 +154,7 @@ public:
                 }
                 if (j == width - 1){ 
                     cyan();
-                    cout << "#";
+                    cout << "|";
                     reset();
                     }
             }
@@ -138,10 +162,10 @@ public:
         }
 
         // Draw bottom border
-        for (int i = 0; i < width + 2; i++){cyan(); cout << "#"; reset();}
+        for (int i = 0; i < width + 2; i++){cyan(); cout << "-"; reset();}
         cout << endl;
 
-        cout << "Score: " << score << endl;
+       blink(); cout << "Score: " << score << endl;
     }
 
     void input() {
@@ -187,6 +211,7 @@ public:
             case DOWN: y++; break;
             default: break;
         }
+        
 
         // Check collisions with boundaries
         if (x < 0 || x >= width || y < 0 || y >= height)
@@ -210,65 +235,67 @@ public:
     }
 
     void run() {
-        int maxx=0;
+        int maxx = 0;
         while (true) {
             while (!gameOver) {
                 draw();
                 input();
                 logic();
-                Sleep(speed); // Adjustable game speed
+                Sleep(speed); // Adjusted speed values
             }
-
-            int maxx = max(maxx,score);
+    
+            maxx = max(maxx, score); // Update max score properly
             printGameOver();
-            Beep(440,1500);
-            cout<<"Your score: " << score << endl;
-            cout<<"Maximum Score: "<<maxx<<endl;
+            Beep(440, 800);
+           bold(); cout << "Your score: " << score << endl;
+            cout << "Maximum Score: " << maxx << endl;
             char choice;
             cout << "Press 'R' to restart or any other key to exit: ";
-            cin>>choice;
+            cin >> choice;
             if (choice == 'R' || choice == 'r') {
-                resetGame();    
+                resetGame();
             } else {
                 break;
             }
         }
     }
+    
 };
 
 
 int main() {
+  
+
     srand(static_cast<unsigned>(time(0)));
-    int gridWidth, gridHeight, gameSpeed;
+    int gridWidth, gridHeight, gameSpeed;  // Declare gameSpeed here
     char pref;
-    cout<<" Enter length and width of the frame: (For standard size enter \"S\")"<<endl;
-    cin>>pref;
 
-    // Customizable grid size and speed
-    if(pref=='s'||pref=='S'){
-        gridHeight=40;
-        gridWidth=80;
+    cout << "Enter length and width of the frame: (For standard size enter \"S\" / for custom inputs enter any key and press Enter)" << endl;
+    cin >> pref;
+
+    if (pref == 's' || pref == 'S') {
+        gridHeight = 20;  // Reduced standard size for better performance
+        gridWidth = 40;
+    } else {
+        cout << "Enter grid width: ";
+        cin >> gridWidth;
+        cout << "Enter grid height: ";
+        cin >> gridHeight;
     }
-    else{
-    cout << "Enter grid width: ";
-    cin >> gridWidth;
-    cout << "Enter grid height: ";
-    cin >> gridHeight;
-    }
+
     char difficulty;
-    cout << "Enter Difficulty level:(\"E\" for Easy, \"M\" for Medium, \"H\" for Hard): "<<endl;
+    cout << "Enter Difficulty level:(\"E\" for Easy, \"M\" for Medium, \"H\" for Hard): " << endl;
     cin >> difficulty;
-    if(difficulty == 'H'|| difficulty=='h'){
-        gameSpeed=1;
-    }
-    else if(difficulty=='M'||difficulty=='m'){
-        gameSpeed=50;
-    }
-    else if(difficulty=='E'||difficulty=='e'){
-        gameSpeed=80;
+
+    if (difficulty == 'H' || difficulty == 'h') {
+        gameSpeed = 20;  // Faster movement
+    } else if (difficulty == 'M' || difficulty == 'm') {
+        gameSpeed = 50;  // Medium speed
+    } else { 
+        gameSpeed = 80;  // Slower movement
     }
 
-    SnakeGame game(gridWidth, gridHeight, gameSpeed);
+    SnakeGame game(gridWidth, gridHeight, gameSpeed);  // Pass gameSpeed correctly
     game.run();
     return 0;
 }
