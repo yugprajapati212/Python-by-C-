@@ -29,13 +29,13 @@ git clone https://github.com/yugprajapati212/Python-by-CPP
 
 Now compile the cpp file:
 ```sh
-g++ snake.cpp -o snakegame
+g++ snake.cpp -o snake -static -std=c++11 -Wall -Wextra
 ```
 
 
 The game should be installed. To run it type
 ```sh
-./snakegame
+snake
 ```
 ## How to play Python by C++
 The snake will intially be of size 1 cell then it will grow each time it consumes a point. The more points it consumes and bigger it gets, more the score is done, and it keeps getting tougher to keep the game going. For movement of snake, both WASD and arrow keys are usable. In case of WASD, W for going upwards, S for downwards, A for right and D for left. The goal is to eat as many points as possible until the snake collides with obstacles or itself.
