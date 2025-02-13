@@ -1,6 +1,8 @@
 # Python by C++
 Python by C++ is a windows-terminal based snake game.
 
+![T](images/logo2.jpeg)
+
 ![T](images/logo2.png)
 
 ## Description
